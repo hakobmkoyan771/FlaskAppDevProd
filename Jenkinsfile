@@ -3,7 +3,10 @@ pipeline {
 	stages {
 		stage("First-Initial") {
 			agent {
-				dockerfile true	
+				docker {
+					image 'ubuntu'
+					args '-u 0'
+				}
 			}
 			steps {
 				sh 'ls /* | grep workspace'
