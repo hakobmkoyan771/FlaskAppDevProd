@@ -4,7 +4,7 @@ pipeline {
 		stage("First-Initial") {
 			agent {
 				docker {
-					image 'ubuntu:alpine'
+					image 'ubuntu'
 					
 					reuseNode true
 				}
