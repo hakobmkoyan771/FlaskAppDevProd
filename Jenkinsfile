@@ -9,7 +9,7 @@ pipeline {
 				}
 			}
 			steps {
-				sh 'ls /* | grep workspace'
+				sh 'ls | grep workspace'
 			}
 		}
 	}
