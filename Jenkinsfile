@@ -5,9 +5,7 @@ pipeline {
     }
     stages {
         stage("Build images") {
-            agent {
-                label 'Master'   
-            }
+            agent any
             steps {
                 script {
                     try {                     
