@@ -10,13 +10,12 @@ pipeline {
             }
             steps {
                 script {
-                    try {
+                    try {                     
                         sh 'cd ./FlaskJenkins/slave; docker build -t jenkins-agent-1 .'
                     }
                     catch (Exception e) {
-                            currentBuild.result = 'FAILURE'
-                            sh 'echo "Quitting job due to error in build image"'
-                            return
+                            echo "Quitting job due to error in build image"
+                            error('Failed to build')
                     }
                 }
             }
@@ -28,10 +27,17 @@ pipeline {
             steps {
                 script {
                     try {
-                        sh 'cd ./FlaskJenkins/slave; docker-compose down || true'
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'FlaskJenkins/slave/docker-compose.yml', option: [$class: 'StopService', service: 'agent-1'], useCustomDockerComposeFile: true])
                     }
-                    finally {
-                        sh 'cd ./FlaskJenkins/slave; docker-compose up -d'
+                    catch (Exception e) {
+                        echo 'No services to down, trying to up!'
+                    }
+                    try {
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'FlaskJenkins/slave/docker-compose.yml', option: [$class: 'StartService', scale: 1, service: 'agent-1'], useCustomDockerComposeFile: true])
+                    }
+                    catch (Exception e) {
+                        echo 'Unable to up service, quitting job'
+                        error('Failed to start agent')
                     }
                 }
             }
@@ -41,7 +47,7 @@ pipeline {
                 label 'Agent_1'  
             }
             steps {
-                sh "cd /home/jenkins/agent/workspace/${env.JOB_NAME}; python3 app.py"
+                sh "python3 /home/jenkins/agent/workspace/${env.JOB_NAME}/app.py"
             }
         }
     }
