@@ -4,14 +4,21 @@ pipeline {
         timeout(time: 4, unit: 'MINUTES')   
     }
     stages {
-        stage("Image of Agent_1") {
+        stage("Build images") {
             agent {
                 label 'Master'   
             }
             steps {
                 script {
                     try {                     
-                        sh 'cd ./FlaskJenkins/slave; docker build -t jenkins-agent-1 .'
+                        sh 'cd ./FlaskJenkins/; docker build -t jenkins-agent-1 .'
+                    }
+                    catch (Exception e) {
+                            echo "Quitting job due to error in build image"
+                            error('Failed to build')
+                    }
+                    try {                     
+                        sh 'cd ./FlaskJenkins/; docker build -f Dockerfile_agent_1 -t jenkins-agent-1 .'
                     }
                     catch (Exception e) {
                             echo "Quitting job due to error in build image"
@@ -20,20 +27,20 @@ pipeline {
                 }
             }
         }   
-        stage("Start Agent_1")  {
+        stage("Start Containers")  {
             agent {
-                label 'Master'   
+                label 'Master'  
             }
             steps {
                 script {
                     try {
-                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'FlaskJenkins/slave/docker-compose.yml', option: [$class: 'StopService', service: 'agent-1'], useCustomDockerComposeFile: true])
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: false])
                     }
                     catch (Exception e) {
                         echo 'No services to down, trying to up!'
                     }
                     try {
-                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'FlaskJenkins/slave/docker-compose.yml', option: [$class: 'StartService', scale: 1, service: 'agent-1'], useCustomDockerComposeFile: true])
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: false])
                     }
                     catch (Exception e) {
                         echo 'Unable to up service, quitting job'
