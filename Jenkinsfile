@@ -4,34 +4,45 @@ pipeline {
         timeout(time: 4, unit: 'MINUTES')   
     }
     stages {
-        stage("Image of Agent_1") {
-            agent {
-                label 'Master'   
-            }
+        stage("Build images") {
+            agent any
             steps {
                 script {
-                    try {
-                        sh 'cd ./FlaskJenkins/slave; docker build -t jenkins-agent-1 .'
+                    try {                     
+                        sh 'cd ./FlaskJenkins/; docker build -t jenkins-agent-1 .'
                     }
                     catch (Exception e) {
-                            currentBuild.result = 'FAILURE'
-                            sh 'echo "Quitting job due to error in build image"'
-                            return
+                            echo "Quitting job due to error in build image"
+                            error('Failed to build')
+                    }
+                    try {                     
+                        sh 'cd ./FlaskJenkins/; docker build -f Dockerfile_agent_1 -t jenkins-agent-1 .'
+                    }
+                    catch (Exception e) {
+                            echo "Quitting job due to error in build image"
+                            error('Failed to build')
                     }
                 }
             }
         }   
-        stage("Start Agent_1")  {
+        stage("Start Containers")  {
             agent {
-                label 'Master'   
+                label 'Master'  
             }
             steps {
                 script {
                     try {
-                        sh 'cd ./FlaskJenkins/slave; docker-compose down || true'
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StopAllServices'], useCustomDockerComposeFile: false])
                     }
-                    finally {
-                        sh 'cd ./FlaskJenkins/slave; docker-compose up -d'
+                    catch (Exception e) {
+                        echo 'No services to down, trying to up!'
+                    }
+                    try {
+                        step([$class: 'DockerComposeBuilder', dockerComposeFile: 'docker-compose.yml', option: [$class: 'StartAllServices'], useCustomDockerComposeFile: false])
+                    }
+                    catch (Exception e) {
+                        echo 'Unable to up service, quitting job'
+                        error('Failed to start agent')
                     }
                 }
             }
@@ -41,7 +52,7 @@ pipeline {
                 label 'Agent_1'  
             }
             steps {
-                sh "cd /home/jenkins/agent/workspace/${env.JOB_NAME}; python3 app.py"
+                sh "python3 /home/jenkins/agent/workspace/${env.JOB_NAME}/app.py"
             }
         }
     }
