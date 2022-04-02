@@ -1,11 +1,7 @@
 pipeline {
-    agent none
-    options {
-        timeout(time: 4, unit: 'MINUTES')   
-    }
+    agent any
     stages {
         stage("Build images") {
-            agent any
             steps {
                 script {
                     try {                     
