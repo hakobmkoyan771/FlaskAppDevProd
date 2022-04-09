@@ -1,0 +1,24 @@
+pipeline {
+  agent none
+  options {
+    timeout(unit: 'MINUTES', time: 2)
+  }
+  stages {
+    stage("Copy file from master to slave") {
+      agent {
+        label 'Master' 
+      }
+      steps {
+        sh "docker cp /bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py agent-1:/tmp/"
+      }
+    }
+    stage("Run app") {
+      agent {
+        label 'Slave' 
+      }
+      steps {
+        sh 'python3 /tmp/app.py' 
+      }
+    }
+  }
+}
