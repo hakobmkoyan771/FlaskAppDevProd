@@ -3,7 +3,7 @@ pipeline {
   stages {
     stage("Build Dev image") {
       steps {
-        sh 
+        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: 'server/', fromRegistry: [], noCache: true, pushCredentialsId: '', pushOnSuccess: false, tagsString: ''])
       }
     }
   }
