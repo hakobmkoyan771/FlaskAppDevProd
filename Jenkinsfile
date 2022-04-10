@@ -41,6 +41,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
+        echo DEBUG
         echo "Running on slave 1 true"
         sh "python3 ./app/app.py"
       }
@@ -53,6 +54,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
+        echo DEBUG
         echo "Running on slave 2 false"
         sh "python3 ./app/app.py"
       }
