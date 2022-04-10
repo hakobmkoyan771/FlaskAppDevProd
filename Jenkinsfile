@@ -11,7 +11,7 @@ pipeline {
         label 'Master' 
       }
       steps {
-        sh "cd ./app/; ${docker.build('-t hakobmkoyan771/flaskapp .')}"
+        sh "cd ./app/; ${docker.build 'hakobmkoyan771/flaskapp'}"
       }
     }
     stage("Request Git Release API") {
