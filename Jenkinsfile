@@ -18,8 +18,11 @@ pipeline {
       //}
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}') | awk 'FNR == 2 {print}'; echo $rel'''
-          echo RELEASE
+            withCredentials([usernamePassword(credentialsId: 'git-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+              RELEASE = sh returnStdout: true, script: """rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases?client_id=${USERNAME}&client_secret=${PASSWORD} | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 2 {print}'; echo $rel"""
+              echo RELEASE
+            }
+          //RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}') | awk 'FNR == 2 {print}'; echo $rel'''
         }
         //echo $RELEASE
       }
