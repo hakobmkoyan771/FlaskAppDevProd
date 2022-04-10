@@ -4,6 +4,7 @@ pipeline {
     DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
     stage("Build application image") {
@@ -12,7 +13,18 @@ pipeline {
       }
       steps {
         script {
-          sh "cd ./app/; ${docker.build('hakobmkoyan771/flaskapp')}"
+          sh "cd ./app/; docker build -t hakobmkoyan771/flaskapp ."
+        }
+      }
+    }
+    stage("Deploy application image") {
+      agent {
+        label 'Master' 
+      }
+      steps {
+        script {
+          sh "docker login -u DOCKERHUB_CREDENTIALS_USR -p DOCKERHUB_CREDENTIALS_PSW"
+          sh "docker push hakobmkoyan771/flaskapp:latest"
         }
       }
     }
