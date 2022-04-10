@@ -1,7 +1,7 @@
 pipeline {
   agent any 
   environment {
-    DEBUG = false
+    DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
   }
@@ -14,10 +14,10 @@ pipeline {
         script {
           RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
           if(RELEASE == "true,") {
-            DEBUG = true
+            DEBUG = 'true'
           }
           else if(RELEASE == "false,") {
-            DEBUG = false
+            DEBUG = 'false'
           }
           else {
             error("Broken link")
@@ -27,7 +27,7 @@ pipeline {
     }
     stage("Start application on prod") {
       when {
-        environment(name: "DEBUG", value: false)
+        environment(name: "DEBUG", value: 'false')
       }
       agent {
         label 'Slave-2' 
