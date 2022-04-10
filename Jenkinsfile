@@ -39,7 +39,7 @@ pipeline {
       }
       steps {
         sh 'ls'
-        sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
+        sh "python3 ./app/app.py"
       }
     }
     stage("Copying application on prod") {
@@ -51,7 +51,7 @@ pipeline {
       }
       steps {
         sh 'ls'
-        sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
+        sh "python3 ./app/app.py"
       }
     }
   }
