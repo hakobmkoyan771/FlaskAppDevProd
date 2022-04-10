@@ -8,9 +8,6 @@ pipeline {
   options {
     timeout(time: 5, unit: 'MINUTES') 
   }
-  parameters {
-    string(name: '') 
-  }
   stages {
     stage("Request Git Release API") {
       agent {
