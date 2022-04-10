@@ -11,7 +11,9 @@ pipeline {
         label 'Master' 
       }
       steps {
-        sh "cd ./app/; ${env.build('-t hakobmkoyan771/flaskapp .')}"
+        script {
+          sh "cd ./app/; ${env.build('-t hakobmkoyan771/flaskapp .')}"
+        }
       }
     }
     stage("Request Git Release API") {
