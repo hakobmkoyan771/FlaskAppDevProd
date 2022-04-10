@@ -1,6 +1,7 @@
 pipeline {
   agent any 
   environment {
+    RELEASE = ''
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
   }
@@ -14,12 +15,11 @@ pipeline {
         label 'Master'
       }
       //steps {
-        //def RELEASE = sh(script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest", returnStdout: true)
         //sh "echo user ${GIT_USERNAME}"
       //}
       steps {
         script {
-          GIT_USERNAME = 'a' 
+          RELEASE = sh(script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest", returnStdout: true)
         }
       }
     }
