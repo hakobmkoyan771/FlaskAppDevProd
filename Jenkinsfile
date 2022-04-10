@@ -1,19 +1,33 @@
 pipeline {
   agent any 
+  environment {
+    
+    GIT_USERNAME = 'hakobmkoyan771'
+    GIT_REPO = 'TestRepo'
+  }
+  options {
+    timeout(time: 5, unit: 'MINUTES') 
+  }
+
   stages {
-    stage("Build Server image") {
-      steps {
-        sh 'cd ./server; docker build -t jenkins-server .'
+    stage("Request Git Release API") {
+      agent {
+        label 'Master'
       }
-    }
-    stage("Build Dev image") {
+      //steps {
+        //sh "echo user ${GIT_USERNAME}"
+      //}
       steps {
-        sh 'cd ./agents/dev-ag-1/; docker build -t jenkins-agent-1 .'
-      }
-    }
-    stage("Build Prod image") {
-      steps {
-        sh 'cd ./agents/prod-ag-2/; docker build -t jenkins-agent-2 .'
+        script {
+          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          if(RELEASE == "true,") {
+          }
+          else if(RELEASE == "false,") {
+          }
+          else {
+             error("Broken link")
+          }
+        }
       }
     }
   }
