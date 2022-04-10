@@ -15,15 +15,14 @@ pipeline {
           RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
           if(RELEASE == "true,") {
             echo RELEASE
-            //DEBUG = 'true'
+            DEBUG = 'true'
           }
           else if(RELEASE == "false,") {
             echo RELEASE
-            //DEBUG = 'false'
+            DEBUG = 'false'
           }
           else {
-            echo RELEASE
-            //error("Broken link")
+            error("Broken link")
           }
         }
       }
@@ -49,6 +48,7 @@ pipeline {
       }
       steps {
         sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
+        sh "python3 /app/app.py"
       }
     }
   }
