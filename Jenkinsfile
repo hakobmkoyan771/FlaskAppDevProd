@@ -30,27 +30,27 @@ pipeline {
         }
       }
     }
-    stage("Copying application on prod") {
-      when {
-        environment(name: "DEBUG", value: 'false')
-      }
-      agent {
-        label 'Slave-1' 
-      }
-      steps {
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/app.py"
-        sh "python3 /app/app.py"
-      }
-    }
     stage("Copying application on dev") {
       when {
         environment(name: "DEBUG", value: 'true')
       }
       agent {
+        label 'Slave-1' 
+      }
+      steps {
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/"
+        sh "python3 /app/app.py"
+      }
+    }
+    stage("Copying application on prod") {
+      when {
+        environment(name: "DEBUG", value: 'false')
+      }
+      agent {
         label 'Slave-2' 
       }
       steps {
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/app.py"
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/"
         sh "python3 /app/app.py"
       }
     }
