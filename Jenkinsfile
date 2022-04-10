@@ -18,7 +18,7 @@ pipeline {
       //}
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease' | awk {print $2}); echo $rel'''
+          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease' | awk '{print $2}'); echo $rel'''
           echo RELEASE
         }
         //echo $RELEASE
