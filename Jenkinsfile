@@ -38,8 +38,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "mkdir /app/"
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/app.py"
         sh "python3 /app/app.py"
       }
     }
@@ -51,8 +50,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "mkdir /app/"
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/app.py"
         sh "python3 /app/app.py"
       }
     }
