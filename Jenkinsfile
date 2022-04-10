@@ -20,7 +20,7 @@ pipeline {
       steps {
         script {
           File 
-          env.RELEASE = sh "rel=curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease'; echo $rel"
+          env.RELEASE = sh '''rel=curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease'; echo $rel'''
           echo env.RELEASE
         }
         //echo $RELEASE
