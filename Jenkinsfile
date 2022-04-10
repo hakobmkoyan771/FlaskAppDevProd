@@ -2,7 +2,7 @@ pipeline {
   agent any 
   environment {
     RELEASE = ''
-    GIT_USERNAME = 'hakobmkoyan771'
+    GIT_USERNAME = ''
     GIT_REPO = 'TestRepo'
   }
   options {
@@ -17,10 +17,9 @@ pipeline {
       steps {
         //${env.RELEASE} = sh returnStdout: true, script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest"
         withCredentials([usernamePassword(credentialsId: 'git-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-          sh "echo pass $PASSWORD"
-          sh "echo user $USERNAME"
+          $GIT_USERNAME = $USERNAME
         }          
-        sh "echo user $USERNAME"
+        sh "echo user $GIT_USERNAME"
       }
     }
   }
