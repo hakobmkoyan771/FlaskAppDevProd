@@ -14,13 +14,10 @@ pipeline {
       agent {
         label 'Master'
       }
-      script {
-        env.RELEASE = env.GIT_USERNAME
-      }
-      //steps {
+      steps {
         //  //sh returnStdout: true, script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest"
-        //sh "echo user ${env.RELEASE}"
-//      }
+        sh "echo user ${env.GIT_USERNAME}"
+      }
     }
   }
 }
