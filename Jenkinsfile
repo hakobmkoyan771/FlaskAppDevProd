@@ -12,7 +12,7 @@ pipeline {
       }
       steps {
         script {
-          sh "cd ./app/; ${env.build('-t hakobmkoyan771/flaskapp .')}"
+          sh "cd ./app/; ${docker.build('-t hakobmkoyan771/flaskapp .')}"
         }
       }
     }
