@@ -12,7 +12,7 @@ pipeline {
       }
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: """rel=$(curl https://api.github.com/repos/${GIT_USERNAME}/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel"""
+          RELEASE = sh returnStdout: true, script: "rel=$(curl https://api.github.com/repos/${GIT_USERNAME}/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel"
           if(RELEASE == "true,") {
             DEBUG = true
           }
