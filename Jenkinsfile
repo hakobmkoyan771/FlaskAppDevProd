@@ -29,6 +29,7 @@ pipeline {
               break;
             }
           }
+          echo DEBUG
         }
       }
     }
