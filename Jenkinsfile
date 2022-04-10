@@ -39,7 +39,7 @@ pipeline {
     }
     stage("Start application on dev") {
       when {
-        environment(name: "DEBUG", value: true)
+        environment(name: "DEBUG", value: 'true')
       }
       agent {
         label 'Slave-1' 
