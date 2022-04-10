@@ -7,6 +7,13 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
+    stage("Password Manager") {
+      steps {
+        sh 'sudo apt-get install pass gnupg2 '
+        sh 'gpg2 --gen-key'
+        sh 'pass init $gpg_id'
+      }
+    } 
     stage("Build application image") {
       agent {
         label 'Master' 
