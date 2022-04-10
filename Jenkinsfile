@@ -30,7 +30,7 @@ pipeline {
         }
       }
     }
-    stage("Copying application on dev") {
+    stage("Running application on dev") {
       when {
         environment(name: "DEBUG", value: 'true')
       }
@@ -42,7 +42,7 @@ pipeline {
         sh "python3 ./app/app.py"
       }
     }
-    stage("Copying application on prod") {
+    stage("Running application on prod") {
       when {
         environment(name: "DEBUG", value: 'false')
       }
