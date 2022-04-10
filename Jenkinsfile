@@ -1,19 +1,22 @@
 pipeline {
   agent any 
+  environment {
+    RELEASE = ''
+  }
+  options {
+    timeout(time: 5, unit: 'MINUTES') 
+  }
+  parameters {
+    string(name: '') 
+  }
   stages {
-    stage("Build Server image") {
-      steps {
-        sh 'cd ./server; docker build -t jenkins-server .'
+    stage("Request Git Release API") {
+      agent {
+        label 'Master'
       }
-    }
-    stage("Build Dev image") {
       steps {
-        sh 'cd ./agents/dev-ag-1/; docker build -t jenkins-agent-1 .'
-      }
-    }
-    stage("Build Prod image") {
-      steps {
-        sh 'cd ./agents/prod-ag-2/; docker build -t jenkins-agent-2 .'
+        echo "${GIT_COMMITTER_NAME}"
+        //RELEASE = sh returnStdout: true, script: 'curl  https://api.github.com/repos/octocat/hello-world/releases/latest' 
       }
     }
   }
