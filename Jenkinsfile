@@ -17,8 +17,10 @@ pipeline {
         //def RELEASE = sh(script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest", returnStdout: true)
         //sh "echo user ${GIT_USERNAME}"
       //}
-      script {
-        GIT_USERNAME = 'a' 
+      steps {
+        script {
+          GIT_USERNAME = 'a' 
+        }
       }
     }
   }
