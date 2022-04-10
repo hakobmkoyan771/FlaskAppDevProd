@@ -19,7 +19,8 @@ pipeline {
         withCredentials([usernamePassword(credentialsId: 'git-id', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
           sh "echo pass $PASSWORD"
           sh "echo user $USERNAME"
-        }
+        }          
+        sh "echo user $USERNAME"
       }
     }
   }
