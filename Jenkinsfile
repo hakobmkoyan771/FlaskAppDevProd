@@ -29,7 +29,6 @@ pipeline {
               break;
             }
           }
-          echo DEBUG
         }
       }
     }
@@ -41,7 +40,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh 'ls'
+        echo "Running on slave 1"
         sh "python3 ./app/app.py"
       }
     }
@@ -53,7 +52,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh 'ls'
+        echo "Running on slave 2"
         sh "python3 ./app/app.py"
       }
     }
