@@ -6,6 +6,14 @@ pipeline {
     GIT_REPO = 'TestRepo'
   }
   stages {
+    stage("Build application image") {
+      agent {
+        label 'Master' 
+      }
+      steps {
+        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './app/', fromRegistry: [credentialsId: 'dockerhub'], noCache: true, pull: true, pushCredentialsId: 'dockerhub', pushOnSuccess: true, tagsString: 'hakobmkoyan771/flaskapp']) 
+      }
+    }
     stage("Request Git Release API") {
       agent {
         label 'Master'
