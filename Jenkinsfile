@@ -11,7 +11,7 @@ pipeline {
         label 'Master' 
       }
       steps {
-        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './app/', fromRegistry: [credentialsId: 'dockerhub'], noCache: true, pull: true, pushCredentialsId: 'dockerhub', pushOnSuccess: true, tagsString: 'hakobmkoyan771/flaskapp']) 
+        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './app/', fromRegistry: [credentialsId: 'dockerhub', url: 'https://hub.docker.com/u/hakobmkoyan771'], noCache: true, pull: true, pushCredentialsId: 'dockerhub', pushOnSuccess: true, tagsString: 'hakobmkoyan771/flaskapp'])
       }
     }
     stage("Request Git Release API") {
