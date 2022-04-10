@@ -7,13 +7,6 @@ pipeline {
     DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
-    stage("Password Manager") {
-      steps {
-        sh 'apt-get install pass gnupg2 '
-        sh 'gpg2 --gen-key'
-        sh 'pass init $gpg_id'
-      }
-    } 
     stage("Build application image") {
       agent {
         label 'Master' 
@@ -24,7 +17,7 @@ pipeline {
         }
       }
     }
-    stage("Deploy application image") {
+/*    stage("Deploy application image") {
       agent {
         label 'Master' 
       }
@@ -33,8 +26,8 @@ pipeline {
           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin --password-stdin'
           sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         }
-      }
-    }
+      }       ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
+    }*/
     stage("Request Git Release API") {
       agent {
         label 'Master'
@@ -69,7 +62,8 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        //sh "python3 ./app/app.py"
+        sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp'
       }
     }
     stage("Running application on prod") {
@@ -82,7 +76,8 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        //sh "python3 ./app/app.py"
+        sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp'
       }
     }
   }
