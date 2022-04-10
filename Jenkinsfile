@@ -19,7 +19,7 @@ pipeline {
       //}
       steps {
         script {
-          RELEASE = sh(script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest", returnStdout: true)
+          RELEASE = sh(script: "curl  https://api.github.com/${GIT_USERNAME}/${GIT_REPO}/releases/latest")
         }
         echo $RELEASE
       }
