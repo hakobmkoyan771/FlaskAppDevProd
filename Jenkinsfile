@@ -15,7 +15,7 @@ pipeline {
         label 'Master'
       }
       steps {
-        echo "${GIT_COMMITTER_NAME}"
+        echo "${env.GIT_COMMITTER_NAME}"
         //RELEASE = sh returnStdout: true, script: 'curl  https://api.github.com/repos/octocat/hello-world/releases/latest' 
       }
     }
