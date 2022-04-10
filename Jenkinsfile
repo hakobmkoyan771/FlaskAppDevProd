@@ -3,17 +3,17 @@ pipeline {
   stages {
     stage("Build Server image") {
       steps {
-        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './server/', fromRegistry: [], noCache: true, pushCredentialsId: '', pushOnSuccess: false, tagsString: ''])
+        sh 'docker build -f ./server/Dockerfile -t jenkins-server'
       }
     }
     stage("Build Dev image") {
       steps {
-        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './agents/dev-ag-1', fromRegistry: [], noCache: true, pushCredentialsId: '', pushOnSuccess: false, tagsString: ''])
+        sh 'docker build -f ./agents/dev-ag-1/Dockerfile -t jenkins-agent-1'
       }
     }
     stage("Build Prod image") {
       steps {
-        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './agents/prod-ag-2', fromRegistry: [], noCache: true, pushCredentialsId: '', pushOnSuccess: false, tagsString: ''])
+        sh 'docker build -f ./agents/prod-ag-2/Dockerfile -t jenkins-agent-2'
       }
     }
   }
