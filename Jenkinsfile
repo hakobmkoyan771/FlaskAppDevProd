@@ -14,13 +14,16 @@ pipeline {
         script {
           RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
           if(RELEASE == "true,") {
-            DEBUG = 'true'
+            echo RELEASE
+            //DEBUG = 'true'
           }
           else if(RELEASE == "false,") {
-            DEBUG = 'false'
+            echo RELEASE
+            //DEBUG = 'false'
           }
           else {
-            error("Broken link")
+            echo RELEASE
+            //error("Broken link")
           }
         }
       }
