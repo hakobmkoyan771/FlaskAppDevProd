@@ -38,6 +38,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
+        sh 'ls'
         sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
       }
     }
@@ -49,6 +50,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
+        sh 'ls'
         sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
       }
     }
