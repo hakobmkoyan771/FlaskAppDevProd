@@ -35,7 +35,9 @@ pipeline {
     }
     stage("Running application on dev") {
       when {
-        environment(name: "DEBUG", value: 'true')
+        expression {
+          DEBUG == "true" 
+        }
       }
       agent {
         label 'Slave-1' 
@@ -48,7 +50,9 @@ pipeline {
     }
     stage("Running application on prod") {
       when {
-        environment(name: "DEBUG", value: 'false')
+        expression {
+          DEBUG == "false" 
+        }
       }
       agent {
         label 'Slave-2' 
