@@ -38,8 +38,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/"
-        sh "python3 /app/app.py"
+        sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
       }
     }
     stage("Copying application on prod") {
@@ -50,8 +49,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /run/"
-        sh "python3 /app/app.py"
+        sh "python3 /home/jenkins/agent-1/workspace/${env.JOB_NAME}/app/app.py"
       }
     }
   }
