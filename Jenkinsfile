@@ -24,29 +24,29 @@ pipeline {
           }
         }
       }
-      stage("Start application on dev") {
-        when {
-          DEBUG == true 
-        }
-        agent {
-          label 'Slave-1' 
-        }
-        steps {
-          sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
-          sh "python3 /app/app.py"
-        }
+    }
+    stage("Start application on prod") {
+      when {
+        DEBUG == false
       }
-      stage("Start application on prod") {
-        when {
-          DEBUG == false
-        }
-        agent {
-          label 'Slave-2' 
-        }
-        steps {
-          sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
-          sh "python3 /app/app.py"
-        }
+      agent {
+        label 'Slave-2' 
+      }
+      steps {
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
+        sh "python3 /app/app.py"
+      }
+    }
+    stage("Start application on dev") {
+      when {
+        DEBUG == true 
+      }
+      agent {
+        label 'Slave-1' 
+      }
+      steps {
+        sh "docker cp jenkins:/bitnami/jenkins/home/workspace/${env.JOB_NAME}/app/app.py /app/app.py"
+        sh "python3 /app/app.py"
       }
     }
   }
