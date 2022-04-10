@@ -1,7 +1,6 @@
 pipeline {
   agent any 
   environment {
-    RELEASE = ''
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
   }
@@ -19,9 +18,8 @@ pipeline {
       //}
       steps {
         script {
-          File 
-          env.RELEASE = sh '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease'); echo $rel'''
-          echo env.RELEASE
+          def RELEASE = sh returnStdout: true, '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease'); echo $rel'''
+          echo $RELEASE
         }
         //echo $RELEASE
       }
