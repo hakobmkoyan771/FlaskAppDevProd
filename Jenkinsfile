@@ -23,7 +23,7 @@ pipeline {
       }
       steps {
         script {
-          sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
+          sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin "
           sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         }
       }
