@@ -14,7 +14,7 @@ pipeline {
         label 'Master'
       }
       steps {
-        def RELEASE = sh returnStdout: true, script: "curl  https://api.github.com/${env.GIT_USERNAME}/${env.GIT_REPO}/releases/latest"
+        RELEASE = sh returnStdout: true, script: "curl  https://api.github.com/${env.GIT_USERNAME}/${env.GIT_REPO}/releases/latest"
         sh "echo user ${env.GIT_USERNAME}"
       }
     }
