@@ -20,7 +20,7 @@ pipeline {
       steps {
         script {
           RELEASE = sh(script: "curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases/latest | grep 'prerelease' | awk '{print ${2}}'", returnStdout: true).trim()
-          echo $RELEASE
+          echo env.RELEASE
         }
         //echo $RELEASE
       }
