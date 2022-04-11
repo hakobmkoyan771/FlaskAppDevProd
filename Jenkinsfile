@@ -1,11 +1,10 @@
 pipeline {
   agent any 
   environment {
-    LOCAL_ERR = 'false'
-    DEBUG = 'false'
+    //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+//    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
     stage("Build application image") {
@@ -85,16 +84,4 @@ pipeline {
       }
     }
   }
-  post {
-      failure {
-        when {
-          expression {
-            LOCAL_ERR == 'true' 
-          }
-        }
-        steps {
-          echo "Something get wrong on 'curl' command to Git API"
-        }
-      }
-    }
 }
