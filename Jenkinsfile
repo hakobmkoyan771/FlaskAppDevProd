@@ -1,5 +1,8 @@
 pipeline {
-  agent any 
+  agent any
+  options {
+    timeout(time: 4, unit: 'MINUTES')
+  }
   environment {
     //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
