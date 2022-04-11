@@ -16,7 +16,6 @@ pipeline {
       }
       steps {
         script {
-          echo git.GIT_AUTHOR_NAME
           sh "cd ./app/; docker build -t ${DOCKERHUB_CREDENTIALS_USR}/flaskapp ."
         }
       }
