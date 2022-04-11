@@ -13,6 +13,7 @@ pipeline {
       }
       steps {
         script {
+          echo GIT_AUTHOR_NAME
           sh "cd ./app/; docker build -t ${DOCKERHUB_CREDENTIALS_USR}/flaskapp ."
         }
       }
@@ -76,7 +77,6 @@ pipeline {
       }
       steps {
         sh "cd ./app/; flask run -p 5050"
-        echo GIT_AUTHOR_NAME
         //sh "docker" Error is docker socket
       }
     }
