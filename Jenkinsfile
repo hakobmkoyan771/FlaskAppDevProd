@@ -62,7 +62,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "cd ./app/app.py; flask run -p 5040"
+        sh "cd ./app/; flask run -p 5040"
       }
     }
     stage("Running application on prod") {
@@ -75,8 +75,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh 'cd app; ls'
-        //sh "cd ./app/app.py; flask run -p 5050"
+        sh "cd ./app/; flask run -p 5050"
         //sh "docker" Error is docker socke
       }
     }
