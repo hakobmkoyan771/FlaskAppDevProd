@@ -4,7 +4,7 @@ pipeline {
     //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
-    DOCKERHUB_CREDENTIALS = credentials('docker-repo')
+   // DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   stages {
     stage("Build application image") {
@@ -23,8 +23,8 @@ pipeline {
       }
       steps {
         script {
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin --password-stdin'
-          sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+          sh 'docker login -u hakobmkoyan771 -p Hm1234****$'
+          sh "docker image push hakobmkoyan771/flaskapp:latest"
         }
       }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
     }
