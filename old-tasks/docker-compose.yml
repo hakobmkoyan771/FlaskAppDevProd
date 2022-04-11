@@ -1,23 +1,23 @@
 version: '2'
 
 services:
-  jenkins:
+  jenkins2222:
     image: jenkins-server
-    container_name: 'jenkins'
+    container_name: 'jenkins2222'
     ports:
-      - '80:8080'
+      - '8081:8080'
     environment:
       - JENKINS_PASSWORD=bitnami
     volumes:
       - 'jenkins_data:/bitnami/jenkins'
       - /var/run/docker.sock:/var/run/docker.sock
-  agent-1:
+  agent-122:
     image: jenkins-agent-1
-    container_name: 'agent-1'
+    container_name: 'agent-122'
     expose:
       - 22
     ports:
-      - '5000:5000'
+      - '5003:5003'
     environment:
       - JENKINS_AGENT_SSH_PUBKEY=ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDIzzqkrsSxkJlpxEkfz05OAvLWBOpWF79rjNlblFrspCx+O/wqZ3bIsjOXru7CgJdX+bj3PwBn+syJvQBVe1coY+MaSGWwXTKq82eI49zRvqZv4v9h50REv7pfR9cj7YoAL5zr+7JNuNklSY6HnqDx5MRrHtjUZMXpDmzC1oXJp36DWszJoXEMtaQMrTjX4t+AwrSljG2p8eRYVxaWPUew3RAbwtgRMvb1F2JpYCr8QZ7CcVCO8t3d07+JKzOs1jxk55ENOrjbwSMlq4xDW7gGYDTlzdsIh3o4+KaOMDkAUd7GBox+f3uk2e1n9IESpR3DueyhWbRLMflpelC4tKXiwfENQa+7cDlOtQjwFp7F3dJyCfEcMvrDRQbsTcjgubuWKb/oj8KNPxW9QfVmBmRvhM2LOwwlFC+whQiXakS2gCg9H0eLxEA2wHQwbw/lWM4ZKlMsowi8lM/WsPWdyGm/vpsFBOkhwR4FQSBxm89tx6io28E5TrJEu5W4i9Ibf7M= hakob@hakob-21
     volumes:
