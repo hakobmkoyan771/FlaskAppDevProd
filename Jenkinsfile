@@ -70,7 +70,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "cd ./app/; python3 -m flask run -p 5040"
+        sh "python3 ./app/app.py"
       }
     }
     stage("Running application on prod") {
@@ -83,7 +83,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "cd ./app/; python3 -m flask run -p 5050"
+        sh "python3 ./app/app.py"
         //sh "docker" Error is docker socket
       }
     }
