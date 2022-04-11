@@ -4,6 +4,7 @@ pipeline {
     DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
+    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
   }
   stages {
     stage("Build application image") {
@@ -11,9 +12,22 @@ pipeline {
         label 'Master' 
       }
       steps {
-        step([$class: 'DockerBuilderPublisher', cleanImages: false, cleanupWithJenkinsJobDelete: false, cloud: '', dockerFileDirectory: './app/', fromRegistry: [credentialsId: 'dockerhub', url: 'https://hub.docker.com/u/hakobmkoyan771'], noCache: true, pull: true, pushCredentialsId: 'dockerhub', pushOnSuccess: true, tagsString: 'hakobmkoyan771/flaskapp'])
+        script {
+          sh "cd ./app/; docker build -t hakobmkoyan771/flaskapp ."
+        }
       }
     }
+/*    stage("Deploy application image") {
+      agent {
+        label 'Master' 
+      }
+      steps {
+        script {
+          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin --password-stdin'
+          sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        }
+      }       ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
+    }*/
     stage("Request Git Release API") {
       agent {
         label 'Master'
@@ -48,7 +62,8 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        //sh "python3 ./app/app.py"
+        sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
       }
     }
     stage("Running application on prod") {
@@ -61,7 +76,8 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        //sh "python3 ./app/app.py"
+        sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
       }
     }
   }
