@@ -84,7 +84,8 @@ pipeline {
         sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
       }
     }
-    post {
+  }
+  post {
       failure {
         when {
           expression {
@@ -96,5 +97,4 @@ pipeline {
         }
       }
     }
-  }
 }
