@@ -40,7 +40,7 @@ pipeline {
           try {
             RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
           }
-          catch {
+          catch(Exception e) {
             error("Invalid address") 
           }
           for(el in RELEASE) {
