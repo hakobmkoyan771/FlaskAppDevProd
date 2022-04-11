@@ -4,7 +4,7 @@ pipeline {
     //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
-   // DOCKERHUB_CREDENTIALS = credentials('docker-repo')
+    DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   stages {
     stage("Build application image") {
@@ -13,11 +13,11 @@ pipeline {
       }
       steps {
         script {
-          sh "cd ./app/; docker build -t hakobmkoyan771/flaskapp ."
+          sh "cd ./app/; docker build -t ${DOCKERHUB_CREDENTIALS_USR}/flaskapp ."
         }
       }
     }
-    stage("Deploy application image") {
+/*    stage("Deploy application image") {
       agent {
         label 'Master' 
       }
@@ -27,7 +27,7 @@ pipeline {
           sh "docker image push hakobmkoyan771/flaskapp:latest"
         }
       }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
-    }
+    }*/
     stage("Request Git Release API") {
       agent {
         label 'Master'
@@ -45,10 +45,7 @@ pipeline {
               break;
             }
             else {
-              error()
-              script {
-                LOCAL_ERR = 'true'
-              }
+              error("Error: link is broken")
               break;
             }
           }
@@ -65,9 +62,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        //sh "python3 ./app/app.py"
-        //sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp'
-        sh 'docker images'
+        sh "cd ./app/app.py; flask run -p 5040"
       }
     }
     stage("Running application on prod") {
@@ -80,9 +75,8 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        //sh "python3 ./app/app.py"
-        //sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp'
-        sh 'docker images'
+        sh "cd ./app/app.py; flask run -p 5050"
+        //sh "docker" Error is docker socke
       }
     }
   }
