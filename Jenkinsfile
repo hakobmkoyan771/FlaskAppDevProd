@@ -3,7 +3,7 @@ pipeline {
   environment {
     //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
-    GIT_REPO = 'TestRepo'
+    //GIT_REPO = 'TestRepo'
     DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   parameters {
