@@ -75,7 +75,8 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "cd ./app/app.py; flask run -p 5050"
+        sh 'ls'
+        //sh "cd ./app/app.py; flask run -p 5050"
         //sh "docker" Error is docker socke
       }
     }
