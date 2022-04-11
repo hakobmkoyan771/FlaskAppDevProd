@@ -1,6 +1,7 @@
 pipeline {
   agent any 
   environment {
+    LOCAL_ERR = 'false'
     DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
@@ -45,7 +46,10 @@ pipeline {
               break;
             }
             else {
-              error("Broken link")
+              error()
+              script {
+                LOCAL_ERR = 'true'
+              }
               break;
             }
           }
@@ -78,6 +82,18 @@ pipeline {
       steps {
         //sh "python3 ./app/app.py"
         sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
+      }
+    }
+    post {
+      failure {
+        when {
+          expression {
+            LOCAL_ERR == 'true' 
+          }
+        }
+        steps {
+          echo "Something get wrong on 'curl' command to Git API"
+        }
       }
     }
   }
