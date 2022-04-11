@@ -1,10 +1,13 @@
 pipeline {
-  agent any 
+  agent any
+  options {
+    timeout(time: 4, unit: 'MINUTES')
+  }
   environment {
-    DEBUG = 'false'
+    //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
-    GIT_REPO = 'TestRepo'
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    //GIT_REPO = 'TestRepo'
+    DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   stages {
     stage("Build application image") {
@@ -13,7 +16,7 @@ pipeline {
       }
       steps {
         script {
-          sh "cd ./app/; docker build -t hakobmkoyan771/flaskapp ."
+          sh "cd ./app/; docker build -t ${DOCKERHUB_CREDENTIALS_USR}/flaskapp ."
         }
       }
     }
@@ -23,10 +26,10 @@ pipeline {
       }
       steps {
         script {
-          sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin --password-stdin'
-          sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+          sh 'docker login -u hakobmkoyan771 -p Hm1234****$'
+          sh "docker image push hakobmkoyan771/flaskapp:latest"
         }
-      }       ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
+      }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
     }*/
     stage("Request Git Release API") {
       agent {
@@ -34,7 +37,12 @@ pipeline {
       }
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          try {
+            RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          }
+          catch(Exception e) {
+            error("Invalid address") 
+          }
           for(el in RELEASE) {
             if(el == "t") { // if RELEASE variable is true and the first char is 't'
               DEBUG = 'true'
@@ -45,7 +53,7 @@ pipeline {
               break;
             }
             else {
-              error("Broken link")
+              error("Error: link is broken")
               break;
             }
           }
@@ -62,8 +70,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        //sh "python3 ./app/app.py"
-        sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
+        sh "python3 ./app/app.py"
       }
     }
     stage("Running application on prod") {
@@ -76,8 +83,8 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        //sh "python3 ./app/app.py"
-        sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp -v /var/run/docker.sock:/var/run/docker.sock'
+        sh "python3 ./app/app.py"
+        //sh "docker" Error is docker socket
       }
     }
   }
