@@ -37,7 +37,12 @@ pipeline {
       }
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          try {
+            RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          }
+          catch {
+            error("Invalid address") 
+          }
           for(el in RELEASE) {
             if(el == "t") { // if RELEASE variable is true and the first char is 't'
               DEBUG = 'true'
@@ -65,7 +70,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "cd ./app/; flask run -p 5040"
+        sh "cd ./app/; python3 -m flask run -p 5040"
       }
     }
     stage("Running application on prod") {
@@ -78,7 +83,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "cd ./app/; flask run -p 5050"
+        sh "cd ./app/; python3 -m flask run -p 5050"
         //sh "docker" Error is docker socket
       }
     }
