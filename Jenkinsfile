@@ -4,7 +4,7 @@ pipeline {
     //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
     GIT_REPO = 'TestRepo'
-    DOCKERHUB_CREDENTIALS = credentials('dockerhub')
+    DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   stages {
     stage("Build application image") {
