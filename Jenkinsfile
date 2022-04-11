@@ -66,7 +66,8 @@ pipeline {
       }
       steps {
         //sh "python3 ./app/app.py"
-        sh 'docker run -d -p 5040:5000 -v /var/run/docker.sock:/var/run/docker.sock hakobmkoyan771/flaskapp'
+        //sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp'
+        sh 'ls'
       }
     }
     stage("Running application on prod") {
@@ -80,7 +81,8 @@ pipeline {
       }
       steps {
         //sh "python3 ./app/app.py"
-        sh 'docker run -d -p 5050:5000 -v /var/run/docker.sock:/var/run/docker.sock hakobmkoyan771/flaskapp'
+        //sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp'
+        sh 'ls'
       }
     }
   }
