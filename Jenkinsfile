@@ -6,6 +6,9 @@ pipeline {
     GIT_REPO = 'TestRepo'
     DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
+  parameters {
+    string description: 'Add the repository to connect with its API', name: 'GIT_REPO'
+  }
   stages {
     stage("Build application image") {
       agent {
@@ -35,7 +38,7 @@ pipeline {
       }
       steps {
         script {
-          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/TestRepo/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
+          RELEASE = sh returnStdout: true, script: '''rel=$(curl https://api.github.com/repos/hakobmkoyan771/${GIT_REPO}/releases | grep 'prerelease' | awk '{print $2}' | awk 'FNR == 1 {print}'); echo $rel'''
           for(el in RELEASE) {
             if(el == "t") { // if RELEASE variable is true and the first char is 't'
               DEBUG = 'true'
