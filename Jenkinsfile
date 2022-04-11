@@ -67,7 +67,7 @@ pipeline {
       steps {
         //sh "python3 ./app/app.py"
         //sh 'docker run -d -p 5040:5000 hakobmkoyan771/flaskapp'
-        sh 'ls'
+        sh 'docker images'
       }
     }
     stage("Running application on prod") {
@@ -82,7 +82,7 @@ pipeline {
       steps {
         //sh "python3 ./app/app.py"
         //sh 'docker run -d -p 5050:5000 hakobmkoyan771/flaskapp'
-        sh 'ls'
+        sh 'docker images'
       }
     }
   }
