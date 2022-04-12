@@ -21,3 +21,5 @@ RUN apt-get update
 
 RUN apt-get -y install docker-ce
 
+RUN apt-get -y install pass
+
