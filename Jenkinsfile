@@ -20,17 +20,15 @@ pipeline {
         }
       }
     }
-/*    stage("Deploy application image") {
+    stage("Deploy application image") {
       agent {
         label 'Master' 
       }
       steps {
-        script {
-          sh 'docker login -u hakobmkoyan771 -p Hm1234****$'
-          sh "docker image push hakobmkoyan771/flaskapp:latest"
-        }
+          sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+          sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
       }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
-    }*/
+    }
     stage("Request Git Release API") {
       agent {
         label 'Master'
@@ -70,7 +68,11 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name dev-app"
+        sh "docker logs dev-app"
+        //sh "python3 ./app/app.py"
       }
     }
     stage("Running application on prod") {
@@ -83,8 +85,11 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "python3 ./app/app.py"
-        //sh "docker" Error is docker socket
+        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
+        sh "docker logs prod-app"
+        //sh "python3 ./app/app.py"
       }
     }
   }
