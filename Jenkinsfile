@@ -68,7 +68,11 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "python3 ./app/app.py"
+        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
+        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name dev-app"
+        sh "docker logs dev-app"
+        //sh "python3 ./app/app.py"
       }
     }
     stage("Running application on prod") {
@@ -81,6 +85,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
+        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
         sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
         sh "docker logs prod-app"
