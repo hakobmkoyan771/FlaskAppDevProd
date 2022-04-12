@@ -81,8 +81,10 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "python3 ./app/app.py"
-        //sh "docker" Error is docker socket
+        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
+        sh "docker logs prod-app"
+        //sh "python3 ./app/app.py"
       }
     }
   }
