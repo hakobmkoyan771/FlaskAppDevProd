@@ -25,6 +25,7 @@ pipeline {
         label 'Master' 
       }
       steps {
+        sh "whoami"
           sh "apt-get install pass gnupg2"
           sh "gpg2 --gen-key"
           sh "pass init $gpg_id"
