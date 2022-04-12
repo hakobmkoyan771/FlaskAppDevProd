@@ -2,7 +2,7 @@ version: '2'
 
 services:
   jenkins:
-    build: .
+    build: ./server
     container_name: 'jenkins'
     ports:
       - '80:8080'
@@ -13,7 +13,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
 
   agent-1:
-    build: ../agents/dev-ag-1 
+    build: ./agents/dev-ag-1 
     container_name: 'agent-1'
     expose:
       - 22
@@ -25,7 +25,7 @@ services:
       - '/var/run/docker.sock:/var/run/docker.sock'
 
   agent-2:
-    build: ../agents/prod-ag-2
+    build: ./agents/prod-ag-2
     container_name: 'agent-2'
     expose:
       - 22
