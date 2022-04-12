@@ -4,9 +4,7 @@ pipeline {
     timeout(time: 4, unit: 'MINUTES')
   }
   environment {
-    //DEBUG = 'false'
     GIT_USERNAME = 'hakobmkoyan771'
-    //GIT_REPO = 'TestRepo'
     DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
   stages {
@@ -27,7 +25,7 @@ pipeline {
       steps {
           sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
           sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
-      }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
+      }       //Can be ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
     }
     stage("Request Git Release API") {
       agent {
@@ -72,7 +70,6 @@ pipeline {
         sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name dev-app"
         sh "docker logs dev-app"
-        //sh "python3 ./app/app.py"
       }
     }
     stage("Running application on prod") {
@@ -89,7 +86,6 @@ pipeline {
         sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
         sh "docker logs prod-app"
-        //sh "python3 ./app/app.py"
       }
     }
   }
