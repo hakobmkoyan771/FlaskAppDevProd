@@ -27,8 +27,8 @@ pipeline {
       steps {
         script {
           sh "apt-get install pass gnupg2; gpg2 --gen-key; pass init $gpg_id"
-          sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
-          sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+          //sh "docker login -u ${DOCKERHUB_CREDENTIALS_USR} -p ${DOCKERHUB_CREDENTIALS_PSW}"
+          //sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
         }
       }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
     }
