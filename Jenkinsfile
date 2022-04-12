@@ -25,7 +25,6 @@ pipeline {
         label 'Master' 
       }
       steps {
-          sh "apt install pass" 
           sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
           sh "docker image push ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
       }       //ERRORMESSAGE: Error saving credentials: error storing credentials - err: exit status 1, out: `Cannot autolaunch D-Bus without X11 $DISPLAY`
