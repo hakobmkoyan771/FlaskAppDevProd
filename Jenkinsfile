@@ -83,9 +83,9 @@ pipeline {
       }
       steps {
         sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
-        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
-        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
-        sh "docker logs prod-app"
+        //sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
+        //sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
+        //sh "docker logs prod-app"
       }
     }
   }
