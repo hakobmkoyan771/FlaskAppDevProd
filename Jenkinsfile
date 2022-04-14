@@ -41,11 +41,11 @@ pipeline {
           }
           for(el in RELEASE) {
             if(el == "t") { // if RELEASE variable is true and the first char is 't'
-              DEBUG = 'true'
+              DEBUG = 'True'
               break;
             }
             else if(el == "f") { // if RELEASE variable is false and the first char is 'f'
-              DEBUG = 'false'
+              DEBUG = 'False'
               break;
             }
             else {
@@ -59,33 +59,27 @@ pipeline {
     stage("Running application on dev") {
       when {
         expression {
-          DEBUG == "true" 
+          DEBUG == "True" 
         }
       }
       agent {
         label 'Slave-1' 
       }
       steps {
-        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
-        sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
-        sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name dev-app"
-        sh "docker logs dev-app"
+        sh "python3 /application/app.py --deb ${DEBUG}"
       }
     }
     stage("Running application on prod") {
       when {
         expression {
-          DEBUG == "false" 
+          DEBUG == "False" 
         }
       }
       agent {
         label 'Slave-2' 
       }
       steps {
-        sh "echo ${DOCKERHUB_CREDENTIALS_PSW} | docker login -u ${DOCKERHUB_CREDENTIALS_USR} --password-stdin"
-        //sh "docker pull ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest"
-        //sh "docker run -d ${DOCKERHUB_CREDENTIALS_USR}/flaskapp:latest --name prod-app"
-        //sh "docker logs prod-app"
+        sh "python3 /application/app.py --deb ${DEBUG}"
       }
     }
   }
