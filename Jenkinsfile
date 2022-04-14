@@ -4,6 +4,7 @@ pipeline {
     timeout(time: 4, unit: 'MINUTES')
   }
   environment {
+    DEBUG = ''
     GIT_USERNAME = 'hakobmkoyan771'
     DOCKERHUB_CREDENTIALS = credentials('docker-repo')
   }
