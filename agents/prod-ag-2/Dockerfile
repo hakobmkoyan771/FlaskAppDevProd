@@ -9,6 +9,8 @@ RUN apt-get -y install python && \
 
 RUN pip3 install flask 
 
+RUN pip3 install argparse
+
 RUN apt-get update
 
 RUN apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -22,4 +24,3 @@ RUN apt-get update
 RUN apt-get -y install docker-ce
 
 RUN apt-get -y install pass
-
