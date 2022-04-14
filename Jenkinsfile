@@ -67,7 +67,7 @@ pipeline {
         label 'Slave-1' 
       }
       steps {
-        sh "python3 /application/app.py --deb ${DEBUG}"
+        sh "python3 /application/app.py --deb True"
       }
     }
     stage("Running application on prod") {
@@ -80,7 +80,7 @@ pipeline {
         label 'Slave-2' 
       }
       steps {
-        sh "python3 /application/app.py --deb ${DEBUG}"
+        sh "python3 /application/app.py --deb False"
       }
     }
   }
